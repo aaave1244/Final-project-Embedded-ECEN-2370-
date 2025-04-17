@@ -1,0 +1,33 @@
+!SESSION 2025-04-17 13:24:29.513 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-04-17 13:24:54.159
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-04-17 13:24:54.162
+!MESSAGE Log4j2 initialized with config file C:\Users\avepe\Documents\VScode Stuff\Ecen_2370_final_project\Final-project-Embedded-ECEN-2370-\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-04-17 13:24:59.022
+!MESSAGE Started RMI Server, listening on port 41337
+!SESSION 2025-04-17 13:25:43.575 -----------------------------------------------
+eclipse.buildId=Version 1.17.0
+java.version=21.0.3
+java.vendor=Eclipse Adoptium
+BootLoader constants: OS=win32, ARCH=x86_64, WS=win32, NL=en_US
+Command-line arguments:  -os win32 -ws win32 -arch x86_64
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 4 4 2025-04-17 13:26:38.025
+!MESSAGE CubeMX plugin appears to be active, Log4j initialization might be too late.
+
+!ENTRY com.st.stm32cube.ide.mcu.informationcenter 1 1 2025-04-17 13:26:38.027
+!MESSAGE Log4j2 initialized with config file C:\Users\avepe\Documents\VScode Stuff\Ecen_2370_final_project\Final-project-Embedded-ECEN-2370-\.metadata\.log4j2.xml
+
+!ENTRY com.st.stm32cube.ide.mcu.ide 1 1 2025-04-17 13:26:43.935
+!MESSAGE Started RMI Server, listening on port 41337
+
+!ENTRY org.eclipse.cdt.core 1 0 2025-04-17 13:27:30.342
+!MESSAGE Indexed 'ECEN2370_StarterCode_SP25' (33 sources, 134 headers) in 9.31 sec: 14,849 declarations; 83,241 references; 1 unresolved inclusions; 92 syntax errors; 240 unresolved names (0.24%)
