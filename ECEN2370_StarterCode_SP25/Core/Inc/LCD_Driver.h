@@ -68,6 +68,7 @@ void LCD_Draw_Square_Fill(uint16_t Corner1x, uint16_t Corner1y, uint16_t Corner2
 
 // Draw Vertical Line
 void LCD_Draw_Vertical_Line(uint16_t x, uint16_t y, uint16_t len, uint16_t color);
+void LCD_Draw_Horizontal_Line(uint16_t x, uint16_t y, uint16_t len, uint16_t color); //I added this :)
 void LCD_Clear(uint8_t LayerIndex, uint16_t Color);
 
 void LCD_Error_Handler(void);
@@ -75,7 +76,7 @@ void LCD_Error_Handler(void);
 // Demo using provided functions
 void visualDemo(void);
 
-void Main_menu(); //I added this :)
+void LCD_Main_menu(); //I added this :)
 
 void LCD_Error_Handler(void);
 

@@ -244,6 +244,13 @@ void LCD_Draw_Vertical_Line(uint16_t x, uint16_t y, uint16_t len, uint16_t color
   }
 }
 
+void LCD_Draw_Horizontal_Line(uint16_t x, uint16_t y, uint16_t len, uint16_t color){ //I made this function! But the logic is literally copied from vertical line lol
+	for (uint16_t i = 0; i < len; i++)
+  	{
+	  LCD_Draw_Pixel(x+i, y, color);
+  	}
+}
+
 void LCD_Clear(uint8_t LayerIndex, uint16_t Color)
 {
 	if (LayerIndex == 0){
@@ -339,7 +346,7 @@ void visualDemo(void)
 	LCD_DisplayChar(140,160,'d');
 }
 
-void Main_menu(){
+void LCD_Main_menu(){
 	LCD_Clear(0,LCD_COLOR_BLACK);
 	LCD_SetTextColor(LCD_COLOR_BLACK);
 	LCD_SetFont(&Font16x24);
