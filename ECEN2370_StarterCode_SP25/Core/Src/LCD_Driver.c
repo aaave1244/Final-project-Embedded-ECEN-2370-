@@ -228,6 +228,14 @@ void LCD_Draw_Circle_Fill(uint16_t Xpos, uint16_t Ypos, uint16_t radius, uint16_
     }
 }
 
+void LCD_Draw_Square_Fill(uint16_t Corner1x, uint16_t Corner1y, uint16_t Corner2x, uint16_t Corner2y, uint16_t color){ //I added this :)
+	for (uint16_t i = Corner1x; i < Corner2x; i++){
+		for (uint16_t j = Corner1y; j < Corner2y; j++){
+			LCD_Draw_Pixel(i,j,color);
+		}
+	}
+}
+
 void LCD_Draw_Vertical_Line(uint16_t x, uint16_t y, uint16_t len, uint16_t color)
 {
   for (uint16_t i = 0; i < len; i++)
@@ -329,6 +337,41 @@ void visualDemo(void)
 	LCD_DisplayChar(125,160,'r');
 	LCD_DisplayChar(130,160,'l');
 	LCD_DisplayChar(140,160,'d');
+}
+
+void Main_menu(){
+	LCD_Clear(0,LCD_COLOR_BLACK);
+	LCD_SetTextColor(LCD_COLOR_BLACK);
+	LCD_SetFont(&Font16x24);
+	LCD_Draw_Square_Fill(20,20,220,70,LCD_COLOR_WHITE); //I added this :)
+	LCD_Draw_Square_Fill(20,80,220,130,LCD_COLOR_WHITE);
+	LCD_DisplayChar(30,30,'1');
+	LCD_DisplayChar(45,30,' ');
+	LCD_DisplayChar(55,30,'P');
+	LCD_DisplayChar(70,30,'l');
+	LCD_DisplayChar(80,30,'a');
+	LCD_DisplayChar(90,30,'y');
+	LCD_DisplayChar(100,30,'e');
+	LCD_DisplayChar(110,30,'r');
+	LCD_DisplayChar(120,30,' ');
+	LCD_DisplayChar(130,30,'M');
+	LCD_DisplayChar(145,30,'o');
+	LCD_DisplayChar(155,30,'d');
+	LCD_DisplayChar(165,30,'e');
+
+	LCD_DisplayChar(30,90,'2');
+	LCD_DisplayChar(45,30,' ');
+	LCD_DisplayChar(55,30,'P');
+	LCD_DisplayChar(70,30,'l');
+	LCD_DisplayChar(80,30,'a');
+	LCD_DisplayChar(90,30,'y');
+	LCD_DisplayChar(100,30,'e');
+	LCD_DisplayChar(110,30,'r');
+	LCD_DisplayChar(120,30,' ');
+	LCD_DisplayChar(130,30,'M');
+	LCD_DisplayChar(145,30,'o');
+	LCD_DisplayChar(155,30,'d');
+	LCD_DisplayChar(165,30,'e');
 }
 
 /**

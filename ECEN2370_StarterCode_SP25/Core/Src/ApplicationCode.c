@@ -36,7 +36,15 @@ void ApplicationInit(void)
 void LCD_Visual_Demo(void)
 {
 	visualDemo();
+	Main_menu(); //I added this :)
 }
+
+#if COMPILE_TOUCH_FUNCTIONS == 0 //for polling implementation
+
+//okay so now we're just gonna... implement polling :)
+
+
+#endif //for polling implementation
 
 #if COMPILE_TOUCH_FUNCTIONS == 1
 void LCD_Touch_Polling_Demo(void)
