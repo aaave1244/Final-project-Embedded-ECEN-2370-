@@ -1,0 +1,16 @@
+../Core/Src/Game.c:10:6:Main_menu	8	static
+../Core/Src/Game.c:28:9:One_player_game	16	static
+../Core/Src/Game.c:100:9:Two_player_game	4	static
+../Core/Src/Game.c:108:6:Print_insult_for_main_menu	16	static
+../Core/Src/Game.c:127:9:Check_for_win	48	static
+../Core/Src/Game.c:245:9:Drop_piece	24	static
+../Core/Src/Game.c:253:13:check_if_middle_piece	16	static
+../Core/Src/Game.c:260:13:check_if_top_piece	16	static
+../Core/Src/Game.c:270:13:check_if_leftmost_piece	16	static
+../Core/Src/Game.c:280:13:check_if_rightmost_piece	16	static
+../Core/Src/Game.c:290:13:check_if_top_left_piece	16	static
+../Core/Src/Game.c:300:13:check_if_top_right_piece	16	static
+../Core/Src/Game.c:310:13:check_if_bottom_left_piece	16	static
+../Core/Src/Game.c:320:13:check_if_bottom_right_piece	16	static
+../Core/Src/Game.c:330:16:check_all	16	static
+../Core/Src/Game.c:352:9:AI_col	24	static

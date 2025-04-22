@@ -1,33 +1,27 @@
 #include "Game.h"
 
-static STMPE811_TouchData StaticTouchData;
-
 static uint8_t Game_Board[6][7]; //2D array to represent the game board. 1 is player 1 and 2 is player 2 or the AI. 0 is nothing.
 
 static uint8_t Prev_col = 0;
 static uint8_t Prev_row = 0;
 
 void Main_menu(){
-    StaticTouchData.orientation = STMPE811_Orientation_Portrait_2;
-
     LCD_Main_menu();
-    // uint8_t WINNER = 0;
-    // if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
-    //     if (StaticTouchData.x > 20 && StaticTouchData.x < 220 && StaticTouchData.y > 20 && StaticTouchData.y < 70){
-    //         WINNER = One_player_game();
-    //     }
-    //     else if (StaticTouchData.x > 20 && StaticTouchData.x < 220 && StaticTouchData.y > 80 && StaticTouchData.y < 130){
-    //         WINNER = Two_player_game();
-    //     } //this may be too precise. I do not have my board at the moment and cannot test this until later!
-    //     else {
-    //         Print_insult_for_main_menu(); //this is currently more of a test to see how well I can implement my RNG functionality! Only prints to the console!
-    //     }
-    // }
+    uint8_t WINNER = 0;
+    if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
+        if (StaticTouchData.x > 20 && StaticTouchData.x < 220 && StaticTouchData.y > 20 && StaticTouchData.y < 70){
+            WINNER = One_player_game();
+        }
+        else if (StaticTouchData.x > 20 && StaticTouchData.x < 220 && StaticTouchData.y > 80 && StaticTouchData.y < 130){
+            WINNER = Two_player_game();
+        } //this may be too precise. I do not have my board at the moment and cannot test this until later!
+        else {
+            Print_insult_for_main_menu(); //this is currently more of a test to see how well I can implement my RNG functionality! Only prints to the console!
+        }
+    }
 } //already under development. currently called LCD_Main_menu in LCD_Driver.c. Think of something fun to add to this though!!
 
 uint8_t One_player_game(){ //figure out how to make workflow for these two better. I want to make one game() function where I can write the majority of code for this.
-    LCD_Clear(0,LCD_COLOR_WHITE);
-    
     bool game_running = GAME_RUNNING; //why is this 1 and not 0? Because I made it that way!!!
 
     bool player_tracker = 0; //this is simply to see if it's player 1 or 2's turn :)
@@ -40,21 +34,21 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
         //also! reminding myself to make a function that will run after every turn, checking the game state and determining if the game is over or not.
 
         //For the lines: We was 7 columns and 6 rows!! I might have to make this game go sideways instead of up and down. I think that would be more fun to make too!!!
-        LCD_Draw_Vertical_Line(180, 0, 320, LCD_COLOR_BLACK); //just realized there is no horizontal line function! I will have to add that later!
-        LCD_Draw_Horizontal_Line(0, 110, 240, LCD_COLOR_BLACK);
+        LCD_Draw_Vertical_Line(204, 0, 320, LCD_COLOR_BLACK); //just realized there is no horizontal line function! I will have to add that later!
+        LCD_Draw_Horizontal_Line(0, 260, 240, LCD_COLOR_BLACK);
         //Also keep in mind: We are flipping the screen to be landscape! So when it is turned... vertical is horizontal and horizontal is vertical!
-        LCD_Draw_Horizontal_Line(0, 140, 180, LCD_COLOR_BLACK); 
-        LCD_Draw_Horizontal_Line(0, 170, 180, LCD_COLOR_BLACK);
-        LCD_Draw_Horizontal_Line(0, 200, 180, LCD_COLOR_BLACK); //7 columns
-        LCD_Draw_Horizontal_Line(0, 230, 180, LCD_COLOR_BLACK);
-        LCD_Draw_Horizontal_Line(0, 260, 180, LCD_COLOR_BLACK);
-        LCD_Draw_Horizontal_Line(0, 290, 180, LCD_COLOR_BLACK); //this box is one pixel wider than the rest. Try to live with it even if it kills you.
+        LCD_Draw_Horizontal_Line(0, 223, 204, LCD_COLOR_BLACK); 
+        LCD_Draw_Horizontal_Line(0, 186, 204, LCD_COLOR_BLACK);
+        LCD_Draw_Horizontal_Line(0, 149, 204, LCD_COLOR_BLACK); //7 columns
+        LCD_Draw_Horizontal_Line(0, 112, 204, LCD_COLOR_BLACK);
+        LCD_Draw_Horizontal_Line(0, 75, 204, LCD_COLOR_BLACK);
+        LCD_Draw_Horizontal_Line(0, 38, 204, LCD_COLOR_BLACK); //this box is one pixel wider than the rest. Try to live with it even if it kills you.
 
-        LCD_Draw_Vertical_Line(150, 110, 210, LCD_COLOR_BLACK);
-        LCD_Draw_Vertical_Line(120, 110, 210, LCD_COLOR_BLACK);
-        LCD_Draw_Vertical_Line(90, 110, 210, LCD_COLOR_BLACK); //6 rows
-        LCD_Draw_Vertical_Line(60, 110, 210, LCD_COLOR_BLACK);
-        LCD_Draw_Vertical_Line(30, 110, 210, LCD_COLOR_BLACK);
+        LCD_Draw_Vertical_Line(170, 0, 260, LCD_COLOR_BLACK);
+        LCD_Draw_Vertical_Line(136, 0, 260, LCD_COLOR_BLACK);
+        LCD_Draw_Vertical_Line(102, 0, 260, LCD_COLOR_BLACK); //6 rows
+        LCD_Draw_Vertical_Line(68, 0, 260, LCD_COLOR_BLACK);
+        LCD_Draw_Vertical_Line(34, 0, 260, LCD_COLOR_BLACK);
 
         for(uint8_t i=0; i<6; i++){
             for(uint8_t j=0; j<7; j++){
@@ -90,15 +84,15 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
 
         //I want to add logic so that we "see" the circle or box or whatever I end up doing "fall." I'm thinking a loop where it will redraw the circle 10 pixels lower than the last iteration of the loop (move it down by 10 pixels every iteration of the loop) ONLY CONCERN! That'll take a lot of loops and that draw circle function is already slow as hell!! My current thought is to make it "hollow" when it falls. Maybe if I just draw the outline it would be faster? I have to test!!!!
         
-        if(Check_for_win(Prev_row, Prev_col) == GAME_WON){ //this will be the offloading of the win condition game logic. Make it print something like "ONE AWAY!" if you're at 3 in a row or something. May have to make this return something so don't be scared if this becomes a uint or smthn
+        if(Check_for_win() == GAME_WON){ //this will be the offloading of the win condition game logic. Make it print something like "ONE AWAY!" if you're at 3 in a row or something. May have to make this return something so don't be scared if this becomes a uint or smthn
             game_running = GAME_NOT_RUNNING; //this is the end condition. only set this when we want the game to end!
             return player_one_or_two;
         }
     }
 
 }
-uint8_t Two_player_game(){
-    return 0; //fix later if u want a good grade
+void Two_player_game(){
+
 }
 
 void Lose(); //win and lose will be for one player. Hate to be that nerd but I'm going to draw inspiration from balatro,
@@ -106,7 +100,7 @@ void Win(); //where the joker card either insults or compliments you based on wh
 //ASK ABOUT THIS LATER THO!!!
 
 void Print_insult_for_main_menu(){
-    /*rand*/ int random_number = 0;//rand() % 5; //this is a placeholder.
+    rand int random_number = rand() % 5; //this is a placeholder.
     if(random_number == 0){
         printf("You are a loser!");
     } else if(random_number == 1){
@@ -470,6 +464,3 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
         }
     }
 }
-
-
-void EXTI0_IRQHANDER

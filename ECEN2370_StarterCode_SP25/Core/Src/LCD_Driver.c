@@ -350,35 +350,36 @@ void LCD_Main_menu(){
 	LCD_Clear(0,LCD_COLOR_BLACK);
 	LCD_SetTextColor(LCD_COLOR_BLACK);
 	LCD_SetFont(&Font16x24);
-	LCD_Draw_Square_Fill(20,20,220,70,LCD_COLOR_WHITE); //I added this :)
-	LCD_Draw_Square_Fill(20,80,220,130,LCD_COLOR_WHITE);
-	LCD_DisplayChar(30,30,'1');
-	LCD_DisplayChar(45,30,' ');
-	LCD_DisplayChar(55,30,'P');
-	LCD_DisplayChar(70,30,'l');
-	LCD_DisplayChar(80,30,'a');
-	LCD_DisplayChar(90,30,'y');
-	LCD_DisplayChar(100,30,'e');
-	LCD_DisplayChar(110,30,'r');
-	LCD_DisplayChar(120,30,' ');
-	LCD_DisplayChar(130,30,'M');
-	LCD_DisplayChar(145,30,'o');
-	LCD_DisplayChar(155,30,'d');
-	LCD_DisplayChar(165,30,'e');
+	LCD_Draw_Square_Fill(20,20,220,100,LCD_COLOR_WHITE); //I added this :)
+	LCD_Draw_Square_Fill(20,120,220,200,LCD_COLOR_WHITE);
+	LCD_DisplayChar(30,60,'1');
+	LCD_DisplayChar(45,60,' ');
+	LCD_DisplayChar(55,60,'P');
+	LCD_DisplayChar(70,60,'l');
+	LCD_DisplayChar(80,60,'a');
+	LCD_DisplayChar(90,60,'y');
+	LCD_DisplayChar(100,60,'e');
+	LCD_DisplayChar(110,60,'r');
+	LCD_DisplayChar(120,60,' ');
+	LCD_DisplayChar(130,60,'M');
+	LCD_DisplayChar(145,60,'o');
+	LCD_DisplayChar(155,60,'d');
+	LCD_DisplayChar(165,60,'e');
 
-	LCD_DisplayChar(30,90,'2');
-	LCD_DisplayChar(45,30,' ');
-	LCD_DisplayChar(55,30,'P');
-	LCD_DisplayChar(70,30,'l');
-	LCD_DisplayChar(80,30,'a');
-	LCD_DisplayChar(90,30,'y');
-	LCD_DisplayChar(100,30,'e');
-	LCD_DisplayChar(110,30,'r');
-	LCD_DisplayChar(120,30,' ');
-	LCD_DisplayChar(130,30,'M');
-	LCD_DisplayChar(145,30,'o');
-	LCD_DisplayChar(155,30,'d');
-	LCD_DisplayChar(165,30,'e');
+	//LCD_SetTextColor(LCD_COLOR_BLACK);
+	LCD_DisplayChar(30,160,'2');
+	LCD_DisplayChar(45,160,' ');
+	LCD_DisplayChar(55,160,'P');
+	LCD_DisplayChar(70,160,'l');
+	LCD_DisplayChar(80,160,'a');
+	LCD_DisplayChar(90,160,'y');
+	LCD_DisplayChar(100,160,'e');
+	LCD_DisplayChar(110,160,'r');
+	LCD_DisplayChar(120,160,' ');
+	LCD_DisplayChar(130,160,'M');
+	LCD_DisplayChar(145,160,'o');
+	LCD_DisplayChar(155,160,'d');
+	LCD_DisplayChar(165,160,'e');
 }
 
 /**

@@ -470,6 +470,3 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
         }
     }
 }
-
-
-void EXTI0_IRQHANDER

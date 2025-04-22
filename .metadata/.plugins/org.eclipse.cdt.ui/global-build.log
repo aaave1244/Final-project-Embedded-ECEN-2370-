@@ -1,21 +1,140 @@
-15:11:22 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
+14:16:31 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
 make -j8 all 
-arm-none-eabi-gcc "../Core/Src/LCD_Driver.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/LCD_Driver.d" -MT"Core/Src/LCD_Driver.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/LCD_Driver.o"
+arm-none-eabi-size  ECEN2370_StarterCode_SP25.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36648	    120	 156392	 193160	  2f288	ECEN2370_StarterCode_SP25.elf
+Finished building: default.size.stdout
+ 
+14:16:37 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
+make -j8 all 
+arm-none-eabi-size  ECEN2370_StarterCode_SP25.elf 
+   text	   data	    bss	    dec	    hex	filename
+  36648	    120	 156392	 193160	  2f288	ECEN2370_StarterCode_SP25.elf
+Finished building: default.size.stdout
+ 
+14:18:21 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
+make -j8 all 
+arm-none-eabi-gcc "../Core/Src/Game.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Game.d" -MT"Core/Src/Game.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Game.o"
+../Core/Src/Game.c: In function 'One_player_game':
+../Core/Src/Game.c:85:13: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+   85 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
+      |             ^~~~~~
+../Core/Src/Game.c:2:1: note: include '<stdio.h>' or provide a declaration of 'printf'
+    1 | #include "Game.h"
+  +++ |+#include <stdio.h>
+    2 | 
+../Core/Src/Game.c:85:13: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+   85 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
+      |             ^~~~~~
+../Core/Src/Game.c:85:13: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c: In function 'Print_insult_for_main_menu':
+../Core/Src/Game.c:111:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  111 |         printf("You are a loser!");
+      |         ^~~~~~
+../Core/Src/Game.c:111:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:113:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  113 |         printf("You are a nerd!");
+      |         ^~~~~~
+../Core/Src/Game.c:113:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:115:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  115 |         printf("You are a dork!");
+      |         ^~~~~~
+../Core/Src/Game.c:115:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:117:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  117 |         printf("You are a fool!");
+      |         ^~~~~~
+../Core/Src/Game.c:117:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:119:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  119 |         printf("You are a clown!");
+      |         ^~~~~~
+../Core/Src/Game.c:119:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:121:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  121 |         printf("RNG NOT WORKING CORRECTLY IN Game.c, Print_insult_for_main_menu()");
+      |         ^~~~~~
+../Core/Src/Game.c:121:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c: In function 'One_player_game':
+../Core/Src/Game.c:99:1: warning: control reaches end of non-void function [-Wreturn-type]
+   99 | }
+      | ^
+../Core/Src/Game.c: In function 'Drop_piece':
+../Core/Src/Game.c:251:1: warning: control reaches end of non-void function [-Wreturn-type]
+  251 | }
+      | ^
+../Core/Src/Game.c: In function 'AI_col':
+../Core/Src/Game.c:472:1: warning: control reaches end of non-void function [-Wreturn-type]
+  472 | }
+      | ^
 arm-none-eabi-gcc -o "ECEN2370_StarterCode_SP25.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\avepe\Documents\VScode Stuff\Ecen_2370_final_project\Final-project-Embedded-ECEN-2370-\ECEN2370_StarterCode_SP25\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ECEN2370_StarterCode_SP25.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: ECEN2370_StarterCode_SP25.elf
  
 arm-none-eabi-size  ECEN2370_StarterCode_SP25.elf 
 arm-none-eabi-objdump -h -S ECEN2370_StarterCode_SP25.elf  > "ECEN2370_StarterCode_SP25.list"
    text	   data	    bss	    dec	    hex	filename
-  33152	    120	 156344	 189616	  2e4b0	ECEN2370_StarterCode_SP25.elf
+  36652	    120	 156392	 193164	  2f28c	ECEN2370_StarterCode_SP25.elf
 Finished building: default.size.stdout
  
 Finished building: ECEN2370_StarterCode_SP25.list
  
-15:11:53 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
+14:19:22 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
 make -j8 all 
+arm-none-eabi-gcc "../Core/Src/Game.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Game.d" -MT"Core/Src/Game.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Game.o"
+../Core/Src/Game.c: In function 'One_player_game':
+../Core/Src/Game.c:85:13: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+   85 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
+      |             ^~~~~~
+../Core/Src/Game.c:2:1: note: include '<stdio.h>' or provide a declaration of 'printf'
+    1 | #include "Game.h"
+  +++ |+#include <stdio.h>
+    2 | 
+../Core/Src/Game.c:85:13: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+   85 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
+      |             ^~~~~~
+../Core/Src/Game.c:85:13: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c: In function 'Print_insult_for_main_menu':
+../Core/Src/Game.c:111:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  111 |         printf("You are a loser!");
+      |         ^~~~~~
+../Core/Src/Game.c:111:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:113:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  113 |         printf("You are a nerd!");
+      |         ^~~~~~
+../Core/Src/Game.c:113:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:115:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  115 |         printf("You are a dork!");
+      |         ^~~~~~
+../Core/Src/Game.c:115:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:117:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  117 |         printf("You are a fool!");
+      |         ^~~~~~
+../Core/Src/Game.c:117:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:119:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  119 |         printf("You are a clown!");
+      |         ^~~~~~
+../Core/Src/Game.c:119:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:121:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  121 |         printf("RNG NOT WORKING CORRECTLY IN Game.c, Print_insult_for_main_menu()");
+      |         ^~~~~~
+../Core/Src/Game.c:121:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c: In function 'One_player_game':
+../Core/Src/Game.c:99:1: warning: control reaches end of non-void function [-Wreturn-type]
+   99 | }
+      | ^
+../Core/Src/Game.c: In function 'Drop_piece':
+../Core/Src/Game.c:251:1: warning: control reaches end of non-void function [-Wreturn-type]
+  251 | }
+      | ^
+../Core/Src/Game.c: In function 'AI_col':
+../Core/Src/Game.c:472:1: warning: control reaches end of non-void function [-Wreturn-type]
+  472 | }
+      | ^
+arm-none-eabi-gcc -o "ECEN2370_StarterCode_SP25.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\avepe\Documents\VScode Stuff\Ecen_2370_final_project\Final-project-Embedded-ECEN-2370-\ECEN2370_StarterCode_SP25\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ECEN2370_StarterCode_SP25.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
+Finished building target: ECEN2370_StarterCode_SP25.elf
+ 
 arm-none-eabi-size  ECEN2370_StarterCode_SP25.elf 
+arm-none-eabi-objdump -h -S ECEN2370_StarterCode_SP25.elf  > "ECEN2370_StarterCode_SP25.list"
    text	   data	    bss	    dec	    hex	filename
-  33152	    120	 156344	 189616	  2e4b0	ECEN2370_StarterCode_SP25.elf
+  36652	    120	 156392	 193164	  2f28c	ECEN2370_StarterCode_SP25.elf
 Finished building: default.size.stdout
+ 
+Finished building: ECEN2370_StarterCode_SP25.list
  

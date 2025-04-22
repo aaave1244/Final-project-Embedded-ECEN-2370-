@@ -40,7 +40,7 @@ void LCD_Visual_Demo(void)
 	uint8_t WINNER = 0;
 	while (WINNER==0) {
 		if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
-			StaticTouchData.y = FLIP_Y_VALUE(StaticTouchData.y); //this is just to flip the y value so that it is correct for the screen orientation.
+			FLIP_Y_VALUE(StaticTouchData.y); //this is just to flip the y value so that it is correct for the screen orientation.
 			if (TM_STMPE811_TouchInRectangle(&StaticTouchData, 20, 20, 200, 80)){ //coordinates of the 1 player box
 				WINNER = One_player_game();
 			}

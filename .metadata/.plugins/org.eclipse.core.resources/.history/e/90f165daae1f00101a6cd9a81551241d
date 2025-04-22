@@ -4,10 +4,8 @@
 #define GAME_RUNNING 1
 #define GAME_NOT_RUNNING 0
 
-#define GAME_WON 128
-#define GAME_NOT_WON 64
-
-#define FLIP_Y_VALUE(y) (LCD_PIXEL_HEIGHT - y)
+#define GAME_WON 512
+#define GAME_NOT_WON 256
 
 
 void Main_menu(); //already under development. currently called Main_menu in LCD_Driver.c. Think of something fun to add to this though!!
