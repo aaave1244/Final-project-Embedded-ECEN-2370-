@@ -30,10 +30,12 @@ void ApplicationInit(void)
 	// Top left would be low x value, high y value. Bottom right would be low x value, low y value.
 	StaticTouchData.orientation = STMPE811_Orientation_Portrait_2;
 
+	User_Button_Init(); //I added this :3
+
 	#endif // COMPILE_TOUCH_FUNCTIONS
 }
 
-void LCD_Visual_Demo(void)
+void Start_Game(void)
 {
 	//visualDemo();
 	Main_menu(); //I added this :)
@@ -43,10 +45,20 @@ void LCD_Visual_Demo(void)
 			StaticTouchData.y = FLIP_Y_VALUE(StaticTouchData.y); //this is just to flip the y value so that it is correct for the screen orientation.
 			if (TM_STMPE811_TouchInRectangle(&StaticTouchData, 20, 20, 200, 80)){ //coordinates of the 1 player box
 				WINNER = One_player_game();
+				if(WINNER == 1){
+					Win(WINNER);
+				} else if (WINNER==2){
+					Lose();
+				}
 			}
 			else if (TM_STMPE811_TouchInRectangle(&StaticTouchData, 20, 120, 200, 80)){ //cooredinates of the 2 player box
 				WINNER = Two_player_game();
-			} //this may be too precise. I do not have my board at the moment and cannot test this until later!
+				if(WINNER == 1){
+					Win(WINNER);
+				} else if (WINNER==2){
+					Win(WINNER); //change later to a wi screen specific to player 
+				}
+			}
 			// else {
 			// 	Print_insult_for_main_menu(); //this is currently more of a test to see how well I can implement my RNG functionality! Only prints to the console!
 			// }

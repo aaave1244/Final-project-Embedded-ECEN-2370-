@@ -293,13 +293,35 @@ void LCD_Draw_Char(uint16_t Xpos, uint16_t Ypos, const uint16_t *c)
   }
 }
 
+void LCD_Draw_Char_Sideways(uint16_t Xpos, uint16_t Ypos, const uint16_t *c)
+{
+  uint32_t index = 0, counter = 0;
+  for(index = 0; index < LCD_Currentfonts->Height; index++)
+  {
+    for(counter = 0; counter < LCD_Currentfonts->Width; counter++)
+    {
+      if((((c[counter] & ((0x80 << ((LCD_Currentfonts->Width / 12 ) * 8 ) ) >> index)) == 0x00) && (LCD_Currentfonts->Width <= 12)) || (((c[counter] & (0x1 << index)) == 0x00)&&(LCD_Currentfonts->Width > 12 )))
+      {
+         //Background If want to overrite text under then add a set color here
+      }
+      else
+      {
+    	  LCD_Draw_Pixel(counter + Xpos,index + Ypos,CurrentTextColor);
+      }
+    }
+  }
+}
+
 //This was taken and adapted from stm32's mcu code
 void LCD_DisplayChar(uint16_t Xpos, uint16_t Ypos, uint8_t Ascii)
 {
   Ascii -= 32;
   LCD_Draw_Char(Xpos, Ypos, &LCD_Currentfonts->table[Ascii * LCD_Currentfonts->Height]);
 }
-
+void LCD_DisplayCharSideways(uint16_t Xpos, uint16_t Ypos, uint8_t Ascii){
+	Ascii -= 32;
+	LCD_Draw_Char_Sideways(Xpos, Ypos, &LCD_Currentfonts->table[Ascii * LCD_Currentfonts->Height]);
+}
 void visualDemo(void)
 {
 	uint16_t x;

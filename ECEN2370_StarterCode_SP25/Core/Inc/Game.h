@@ -4,10 +4,12 @@
 #define GAME_RUNNING 1
 #define GAME_NOT_RUNNING 0
 
-#define GAME_WON 128
+#define GAME_WON 4
 #define GAME_NOT_WON 64
 
 #define FLIP_Y_VALUE(y) (LCD_PIXEL_HEIGHT - y)
+
+#define LCD_COLOR_PLAYER(x) (x==1 ? LCD_COLOR_RED : LCD_COLOR_GREEN)
 
 
 void Main_menu(); //already under development. currently called Main_menu in LCD_Driver.c. Think of something fun to add to this though!!
@@ -16,8 +18,10 @@ uint8_t One_player_game(); //figure out how to make workflow for these two bette
 uint8_t Two_player_game(); // write the majority of code for this.
 uint8_t AI_col(uint8_t row, uint8_t col);
 
+void User_col(uint8_t player_one_or_two); //this is the function that will drop the piece into the column.
+
 void Lose(); //win and lose will be for one player. Hate to be that nerd but I'm going to draw inspiration from balatro,
-void Win(); //where the joker card either insults or compliments you based on whether you win or lose. I'll use the RNG library to choose from a few nice or mean messages, so that requirement should be satisfied. 
+void Win(uint8_t player_one_or_two); //where the joker card either insults or compliments you based on whether you win or lose. I'll use the RNG library to choose from a few nice or mean messages, so that requirement should be satisfied. 
 //ASK ABOUT THIS LATER THO!!!
 
 void Print_insult_for_main_menu(); //this is SPECIFICALLY for the main menu!

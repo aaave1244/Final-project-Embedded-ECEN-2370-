@@ -2,27 +2,22 @@
 
 static STMPE811_TouchData StaticTouchData;
 
-static uint8_t Game_Board[6][7]; //2D array to represent the game board. 1 is player 1 and 2 is player 2 or the AI. 0 is nothing.
+static uint8_t Game_Board[6][7] = {0}; //2D array to represent the game board. 1 is player 1 and 2 is player 2 or the AI. 0 is nothing.
 
 static uint8_t Prev_col = 0;
 static uint8_t Prev_row = 0;
 
+static uint32_t Starting_Time = 0;
+
 void Main_menu(){
     StaticTouchData.orientation = STMPE811_Orientation_Portrait_2;
 
+    //THIS IS RNG LOGIC!! USE WHEREVER I NEED RNG!!
+    // RNG_HandleTypeDef *hrng;
+    // HAL_RNG_Init(hrng);
+    // HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(RNG_HandleTypeDef *hrng, uint32_t *random32bit);
+
     LCD_Main_menu();
-    // uint8_t WINNER = 0;
-    // if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
-    //     if (StaticTouchData.x > 20 && StaticTouchData.x < 220 && StaticTouchData.y > 20 && StaticTouchData.y < 70){
-    //         WINNER = One_player_game();
-    //     }
-    //     else if (StaticTouchData.x > 20 && StaticTouchData.x < 220 && StaticTouchData.y > 80 && StaticTouchData.y < 130){
-    //         WINNER = Two_player_game();
-    //     } //this may be too precise. I do not have my board at the moment and cannot test this until later!
-    //     else {
-    //         Print_insult_for_main_menu(); //this is currently more of a test to see how well I can implement my RNG functionality! Only prints to the console!
-    //     }
-    // }
 } //already under development. currently called LCD_Main_menu in LCD_Driver.c. Think of something fun to add to this though!!
 
 uint8_t One_player_game(){ //figure out how to make workflow for these two better. I want to make one game() function where I can write the majority of code for this.
@@ -30,7 +25,28 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
     
     bool game_running = GAME_RUNNING; //why is this 1 and not 0? Because I made it that way!!!
 
-    bool player_tracker = 0; //this is simply to see if it's player 1 or 2's turn :)
+    bool player_tracker = true; //this is simply to see if it's player 1 or 2's turn :)
+
+    //TIMER LOGIC!
+
+    Starting_Time = HAL_GetTick();
+
+    //For the lines: We was 7 columns and 6 rows!! I might have to make this game go sideways instead of up and down. I think that would be more fun to make too!!!
+    LCD_Draw_Vertical_Line(180, 0, 320, LCD_COLOR_BLACK); //just realized there is no horizontal line function! I will have to add that later!
+    LCD_Draw_Horizontal_Line(0, 110, 240, LCD_COLOR_BLACK);
+    //Also keep in mind: We are flipping the screen to be landscape! So when it is turned... vertical is horizontal and horizontal is vertical!
+    LCD_Draw_Horizontal_Line(0, 140, 180, LCD_COLOR_BLACK); 
+    LCD_Draw_Horizontal_Line(0, 170, 180, LCD_COLOR_BLACK);
+    LCD_Draw_Horizontal_Line(0, 200, 180, LCD_COLOR_BLACK); //7 columns
+    LCD_Draw_Horizontal_Line(0, 230, 180, LCD_COLOR_BLACK);
+    LCD_Draw_Horizontal_Line(0, 260, 180, LCD_COLOR_BLACK);
+    LCD_Draw_Horizontal_Line(0, 290, 180, LCD_COLOR_BLACK); //this box is one pixel wider than the rest. Try to live with it even if it kills you.
+
+    LCD_Draw_Vertical_Line(150, 110, 210, LCD_COLOR_BLACK);
+    LCD_Draw_Vertical_Line(120, 110, 210, LCD_COLOR_BLACK);
+    LCD_Draw_Vertical_Line(90, 110, 210, LCD_COLOR_BLACK); //6 rows
+    LCD_Draw_Vertical_Line(60, 110, 210, LCD_COLOR_BLACK);
+    LCD_Draw_Vertical_Line(30, 110, 210, LCD_COLOR_BLACK);
 
     while(game_running==GAME_RUNNING){
         player_tracker = !player_tracker;
@@ -39,54 +55,29 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
         //game logic here. I will probably have to make a few functions to handle the game logic, but I want to keep it simple for now.
         //also! reminding myself to make a function that will run after every turn, checking the game state and determining if the game is over or not.
 
-        //For the lines: We was 7 columns and 6 rows!! I might have to make this game go sideways instead of up and down. I think that would be more fun to make too!!!
-        LCD_Draw_Vertical_Line(180, 0, 320, LCD_COLOR_BLACK); //just realized there is no horizontal line function! I will have to add that later!
-        LCD_Draw_Horizontal_Line(0, 110, 240, LCD_COLOR_BLACK);
-        //Also keep in mind: We are flipping the screen to be landscape! So when it is turned... vertical is horizontal and horizontal is vertical!
-        LCD_Draw_Horizontal_Line(0, 140, 180, LCD_COLOR_BLACK); 
-        LCD_Draw_Horizontal_Line(0, 170, 180, LCD_COLOR_BLACK);
-        LCD_Draw_Horizontal_Line(0, 200, 180, LCD_COLOR_BLACK); //7 columns
-        LCD_Draw_Horizontal_Line(0, 230, 180, LCD_COLOR_BLACK);
-        LCD_Draw_Horizontal_Line(0, 260, 180, LCD_COLOR_BLACK);
-        LCD_Draw_Horizontal_Line(0, 290, 180, LCD_COLOR_BLACK); //this box is one pixel wider than the rest. Try to live with it even if it kills you.
-
-        LCD_Draw_Vertical_Line(150, 110, 210, LCD_COLOR_BLACK);
-        LCD_Draw_Vertical_Line(120, 110, 210, LCD_COLOR_BLACK);
-        LCD_Draw_Vertical_Line(90, 110, 210, LCD_COLOR_BLACK); //6 rows
-        LCD_Draw_Vertical_Line(60, 110, 210, LCD_COLOR_BLACK);
-        LCD_Draw_Vertical_Line(30, 110, 210, LCD_COLOR_BLACK);
-
-        for(uint8_t i=0; i<6; i++){
-            for(uint8_t j=0; j<7; j++){
-                if(Game_Board[i][j] == 1){
-                    LCD_Draw_Circle_Fill(18+(j*37), 17+(i*33), 15, LCD_COLOR_RED);
-                } else if(Game_Board[i][j] == 2){
-                    LCD_Draw_Circle_Fill(18+(j*37), 17+(i*33), 15, LCD_COLOR_GREEN);
-                }
-            }
-        }
-
         uint8_t col_tracker = 3; //start the game in the middle column!
         uint8_t row_tracker = 0;
         if (player_one_or_two == 1){
-            if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed && StaticTouchData.y > 160){
-                col_tracker = col_tracker-1;
-            }
-            else if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed && StaticTouchData.y <= 160){
-                col_tracker = col_tracker+1;
-            }
+            User_col(player_one_or_two);
             // if(button_pressed == 1){ //this is a placeholder. I need to make a function that will check if the button was pressed or not.
             //     row_tracker = Drop_piece(col_tracker);
             // }
         } else if(player_one_or_two == 2){
             col_tracker = AI_col(Prev_row, Prev_col); //this is the function that will drop the piece into the column. It will return the row number that it falls to.
             row_tracker = Drop_piece(col_tracker); //this is the function that will drop the piece into the column. It will return the row number that it falls to.
+            if(row_tracker == 255){
+                //cannot drop as this column is full!!
+                printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
+                break;
+            }
+            LCD_Draw_Circle_Fill(15+(row_tracker*30), 305-((6-col_tracker)*30), 12, LCD_COLOR_PLAYER(player_one_or_two));
+            Game_Board[row_tracker][col_tracker] = player_one_or_two;
+            Prev_col = col_tracker;
+            Prev_row = row_tracker;
+
         } else {
             printf("Error in One_player_game()! Player number is not 1 or 2!");
         }
-
-        Prev_col = col_tracker;
-        Prev_row = row_tracker;
 
         //I want to add logic so that we "see" the circle or box or whatever I end up doing "fall." I'm thinking a loop where it will redraw the circle 10 pixels lower than the last iteration of the loop (move it down by 10 pixels every iteration of the loop) ONLY CONCERN! That'll take a lot of loops and that draw circle function is already slow as hell!! My current thought is to make it "hollow" when it falls. Maybe if I just draw the outline it would be faster? I have to test!!!!
         
@@ -101,9 +92,163 @@ uint8_t Two_player_game(){
     return 0; //fix later if u want a good grade
 }
 
-void Lose(); //win and lose will be for one player. Hate to be that nerd but I'm going to draw inspiration from balatro,
-void Win(); //where the joker card either insults or compliments you based on whether you win or lose. I'll use the RNG library to choose from a few nice or mean messages, so that requirement should be satisfied. 
+static bool button_pressed = false;
+static uint32_t time_seconds = 0;
+
+void User_col(uint8_t player_one_or_two){
+    uint8_t col_tracker = 3; //start the game in the middle column!
+    LCD_Draw_Circle_Fill(210, 305-(col_tracker*30), 12, LCD_COLOR_PLAYER(player_one_or_two));
+    while (!button_pressed){
+
+        uint32_t Time_Taken = (HAL_GetTick() - Starting_Time)/1000;
+        int ones = Time_Taken % 10; //this is just to get the last digit of the time taken.
+        int tens = (Time_Taken / 10) % 10; //this is just to get the second to last digit of the time taken.
+        int hundreds = (Time_Taken / 100) % 10; //this is just to get the third to last digit of the time taken.
+        if(hundreds != ((time_seconds/100)%10)){
+            LCD_SetTextColor(LCD_COLOR_WHITE);
+            LCD_DisplayCharSideways(190,10, ((time_seconds/100)%10) + '0');
+            LCD_SetTextColor(LCD_COLOR_BLACK);
+            LCD_DisplayCharSideways(190,10, hundreds + '0'); //this is just to get the hundreds digit of the time taken.
+        }
+        if(tens!=((time_seconds/10)%10)){
+            LCD_SetTextColor(LCD_COLOR_WHITE);
+            LCD_DisplayCharSideways(190,25, ((time_seconds/10)%10) + '0');
+            LCD_SetTextColor(LCD_COLOR_BLACK);
+            LCD_DisplayCharSideways(190,25, tens + '0');
+        }
+        if(ones!=((time_seconds)%10)){
+            LCD_SetTextColor(LCD_COLOR_WHITE);
+            LCD_DisplayCharSideways(190,40, ((time_seconds)%10) + '0');
+            LCD_SetTextColor(LCD_COLOR_BLACK);
+        }
+        LCD_SetTextColor(LCD_COLOR_BLACK);
+        LCD_DisplayCharSideways(190,40,'0' + ones);
+
+        time_seconds = Time_Taken;
+        if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
+		    StaticTouchData.y = FLIP_Y_VALUE(StaticTouchData.y); //this is just to flip the y value so that it is correct for the screen orientation.
+            if (TM_STMPE811_TouchInRectangle(&StaticTouchData, 0, 0, 240, 160)){ 
+                if(!(col_tracker>=6)){
+                    col_tracker = col_tracker+1;
+                    LCD_Draw_Circle_Fill(210, 305-(col_tracker*30), 12, LCD_COLOR_PLAYER(player_one_or_two));
+                    LCD_Draw_Circle_Fill(210, 305-((col_tracker-1)*30), 12, LCD_COLOR_WHITE);
+                }
+            }
+            else if (TM_STMPE811_TouchInRectangle(&StaticTouchData, 0, 160, 240, 160)){
+                if(!(col_tracker<=0)){
+                    col_tracker = col_tracker-1;
+                    LCD_Draw_Circle_Fill(210, 305-(col_tracker*30), 12, LCD_COLOR_PLAYER(player_one_or_two));
+                    LCD_Draw_Circle_Fill(210, 305-((col_tracker+1)*30), 12, LCD_COLOR_WHITE);
+                }
+            }
+        }
+        HAL_Delay(150); //change this depending on how fast you can tap!!!
+    }
+    button_pressed = false; //reset the button pressed variable for the next turn.
+    uint8_t fake_col_tracker = col_tracker;
+
+    col_tracker = 6-col_tracker;
+    uint8_t row_tracker = Drop_piece(col_tracker);
+
+    LCD_Draw_Circle_Fill(15+(row_tracker*30), 305-(fake_col_tracker*30), 12, LCD_COLOR_PLAYER(player_one_or_two)); //this is the function that will drop the piece into the column. It will return the row number that it falls to.
+    LCD_Draw_Circle_Fill(210, 305-(fake_col_tracker*30), 12, LCD_COLOR_WHITE);
+
+    Game_Board[row_tracker][col_tracker] = player_one_or_two; 
+    Prev_col = col_tracker;
+    Prev_row = row_tracker;
+}
+
+//win and lose will be for one player. Hate to be that nerd but I'm going to draw inspiration from balatro,
+//where the joker card either insults or compliments you based on whether you win or lose. I'll use the RNG library to choose from a few nice or mean messages, so that requirement should be satisfied. 
 //ASK ABOUT THIS LATER THO!!!
+void Lose(){
+    uint32_t Ending_Time = HAL_GetTick();
+    uint32_t Time_Taken = Ending_Time - Starting_Time;
+
+    LCD_Clear(0, LCD_COLOR_RED);
+    LCD_DisplayChar(100,30,'Y');
+    LCD_DisplayChar(120,30,'O');
+    LCD_DisplayChar(140,30,'U');
+
+    LCD_DisplayChar(90,50,'L');
+    LCD_DisplayChar(110,50,'O');
+    LCD_DisplayChar(130,50,'S');
+    LCD_DisplayChar(150,50,'E');
+
+    Time_Taken = Time_Taken / 1000; //convert to seconds
+
+    LCD_DisplayChar(80,70,'T');
+    LCD_DisplayChar(100,70,'I');
+    LCD_DisplayChar(120,70,'M');
+    LCD_DisplayChar(140,70,'E');
+    LCD_DisplayChar(160,70,':');
+
+
+    int ones = Time_Taken % 10; //this is just to get the last digit of the time taken.
+    int tens = (Time_Taken / 10) % 10; //this is just to get the second to last digit of the time taken.
+    int hundreds = (Time_Taken / 100) % 10; //this is just to get the third to last digit of the time taken.
+    if(hundreds != 0){
+        LCD_DisplayChar(100,90, hundreds + '0'); //this is just to get the hundreds digit of the time taken.
+    }
+    if(tens!=0){
+        LCD_DisplayChar(120,90, tens + '0');
+    }
+    LCD_DisplayChar(140,90,'0' + ones);
+
+    LCD_DisplayChar(60,110,'S');
+    LCD_DisplayChar(80,110,'E');
+    LCD_DisplayChar(100,110,'C');
+    LCD_DisplayChar(120,110,'O');
+    LCD_DisplayChar(140,110,'N');
+    LCD_DisplayChar(160,110,'D');
+    LCD_DisplayChar(180,110,'S');
+
+    HAL_Delay(5000); //this is just to give the user a second to see the message before it goes away.
+}
+
+void Win(uint8_t player_one_or_two){
+    uint32_t Ending_Time = HAL_GetTick();
+    uint32_t Time_Taken = Ending_Time - Starting_Time;
+
+    LCD_Clear(0, LCD_COLOR_GREEN);
+    LCD_DisplayChar(100,30,'Y');
+    LCD_DisplayChar(120,30,'O');
+    LCD_DisplayChar(140,30,'U');
+
+    LCD_DisplayChar(100,50,'W');
+    LCD_DisplayChar(120,50,'I');
+    LCD_DisplayChar(140,50,'N');
+
+    Time_Taken = Time_Taken / 1000; //convert to seconds
+
+    LCD_DisplayChar(80,70,'T');
+    LCD_DisplayChar(100,70,'I');
+    LCD_DisplayChar(120,70,'M');
+    LCD_DisplayChar(140,70,'E');
+    LCD_DisplayChar(160,70,':');
+
+
+    int ones = Time_Taken % 10; //this is just to get the last digit of the time taken.
+    int tens = (Time_Taken / 10) % 10; //this is just to get the second to last digit of the time taken.
+    int hundreds = (Time_Taken / 100) % 10; //this is just to get the third to last digit of the time taken.
+    if(hundreds != 0){
+        LCD_DisplayChar(100,90, hundreds + '0'); //this is just to get the hundreds digit of the time taken.
+    }
+    if(tens!=0){
+        LCD_DisplayChar(120,90, tens + '0');
+    }
+    LCD_DisplayChar(140,90,'0' + ones);
+
+    LCD_DisplayChar(60,110,'S');
+    LCD_DisplayChar(80,110,'E');
+    LCD_DisplayChar(100,110,'C');
+    LCD_DisplayChar(120,110,'O');
+    LCD_DisplayChar(140,110,'N');
+    LCD_DisplayChar(160,110,'D');
+    LCD_DisplayChar(180,110,'S');
+    //and then display stats!! This is a grade requirement!!!
+    HAL_Delay(5000);
+}
 
 void Print_insult_for_main_menu(){
     /*rand*/ int random_number = 0;//rand() % 5; //this is a placeholder.
@@ -126,13 +271,21 @@ void Print_insult_for_main_menu(){
 //I've made a slight alteration for this. It no longer just checks for a win, it also returns the number of pieces currently in series (you know what i mean i just don't want to confuse myself by saying in a row)
 uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for players 1 and 2. Make sure to code for the future!! //successfully futureproofed!!
 
+    //Okay! we need to make a local variable for this. Previously I would return the shortest amount of connected pieces, BUT! thats not good i don't want to do that :)
+    uint8_t connected_pieces = 0; //this is the number of pieces in a row. I will return this to the singleplayer and multiplayer function so that it can be used for the win condition.
+
         //vertical check
-        for(int i=row; i>=0; i--){ //My beautiful girlfriend Amelie gave me a bit of help on this actually. Since we're doing a vertical check, we ONLY need to check the pieces below the last dropped piece! Like that's it!! She's so smart :)
+        for(uint8_t i=row; i>=0; i--){ //My beautiful girlfriend Amelie gave me a bit of help on this actually. Since we're doing a vertical check, we ONLY need to check the pieces below the last dropped piece! Like that's it!! She's so smart :)
             if(i==row-4){ // ((i-row)==4) would work as well. Just checking that we have TRAVERSED 5 spaces, the 5th space does NOT need to be the correct piece!
                 return GAME_WON;
             }
+            if(i==0){
+            	connected_pieces = row+1;
+            	break;
+            }
             if(Game_Board[i][col] != Game_Board[row][col]){ //Game_Board[row][col] is a general win checker. no need for making seperate functions for each player!
-                return i==row-4; //break;
+                connected_pieces = row-i;
+                break;
             }
         }
 
@@ -141,53 +294,77 @@ uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for player
             if(i==col+4){
                 return GAME_WON;
             }
-            if(Game_Board[row][i] != Game_Board[row][col]){ //I know this looks like it's O(n^2), but I think it's O(n). The first for loop checks all of the positions to the right of the last dropped piece, then the second loop checks all of the spaces to the left. As long as we have CHECKED 5 spaces without the loops breaking at this point, we know we have a winner! and the winner will be determined by the player that dropped the last piece!
-                for(int j=col; j>=0; j--){ //okay! this tests starting from the left side of the position we start from.
-                    if((i-col)+(j-col)==4){ //(i-col)+(j-col) is just for for finding the number of spaces tested.
+            if(Game_Board[row][i] != Game_Board[row][col] || i==6){ //I know this looks like it's O(n^2), but I think it's O(n). The first for loop checks all of the positions to the right of the last dropped piece, then the second loop checks all of the spaces to the left. As long as we have CHECKED 5 spaces without the loops breaking at this point, we know we have a winner! and the winner will be determined by the player that dropped the last piece!
+                for(uint8_t j=col-1; j>=0; j--){ //okay! this tests starting from the left side of the position we start from.
+                    if(j==255){
+                    	if(connected_pieces < i){
+                    		connected_pieces = i;
+                    	}
+                    	i=7;
+                    	break;
+                    }
+                	if((i-col)+(col-j)-1==4){ //(i-col)+(j-col) is just for for finding the number of spaces tested.
                         return GAME_WON;
                     }
                     if(Game_Board[row][j] != Game_Board[row][col]){ //okay! I know this is a little sloppy but I made a generalized win checker. I no longer need to write two seperate functions!
-                        return (i-col)+(j-col);
+                        if((i-col)+(col-j)-1 > connected_pieces){
+                            connected_pieces = (i-col)+(col-j)-1;
+                        }
+                        i=7;
+                        break;
                     }
                 }
             }
         }
 
         //diagonal check (top left to bottom right. will check bottom right FIRST)
-        for(int i=0; i+col>7 && row-i>=0; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
-            if(i==row-4){ 
-                return GAME_WON;
-            }
+        for(uint8_t i=0; i+col<7 && row-i>=0; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
+//            if(i==row-4){
+//                return GAME_WON;
+//            }
             if(Game_Board[row-i][col+i] != Game_Board[row][col]){
-                for(int j=0; col-j>=0 && row+j<6; j++){
+                for(uint8_t j=0; col-j>=0 && row+j<6; j++){
                     if((i+j)==4){ 
                         return GAME_WON;
                     }
                     if(Game_Board[row+j][col-j] != Game_Board[row][col]){
-                        return (i+j);
+                        if((i+j) > connected_pieces){
+                            connected_pieces = (i+j);
+                        }
+                        i = 7-col;
+                        break;
                     }
                 }
+                break;
             }
         }
 
         //diagonal check (top right to bottom left. will check bottom left FIRST)
-        for(int i=0; i+col>=0 && row-i>=0; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
-            if(i==row-4){ 
-                return GAME_WON;
+        for(uint8_t i=0; i+col>=0 && row-i>=0 && i!=255 && i!=254; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
+//            if(i==row-4){
+//                return GAME_WON;
+//            }
+            if(i > row || i > col){
+            	break;
             }
             if(Game_Board[row-i][col-i] != Game_Board[row][col]){
-                for(int j=0; col+j<7 && row+j<6; j++){
+                for(uint8_t j=0; col+j<7 && row+j<6; j++){
                     if((i+j)==4){ 
                         return GAME_WON;
                     }
                     if(Game_Board[row+j][col+j] != Game_Board[row][col]){
-                        return (i+j);
+                        if((i+j) > connected_pieces){
+                            connected_pieces = (i+j);
+                        }
+                        i = 254;
+                        break;
                     }
                 }
+                break;
             }
         }
 
-        return GAME_NOT_WON;
+        return connected_pieces;
 
     // if(Game_Board[row][col] == 1){ //Player 1
 
@@ -248,6 +425,7 @@ uint8_t Drop_piece(uint8_t col){ //Game_Board[?][col]
             return i;
         }
     }
+    return 255;
 }
 
 static bool check_if_middle_piece(uint8_t row, uint8_t col){
@@ -373,8 +551,8 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
             if(col==0){ //edge case not caught by the check_if_leftmost_piece function
                 return col+3;
             }
-            if(Game_Board[row][col+2]==0){
-                return col+2; //drop it to the right of the left piece
+            if(Game_Board[row][col+3]==0){
+                return col+3; //drop it to the right of the rightmost piece
             } else if(Game_Board[row][col-1]==0){
                 return col-1; //drop it to the left of the left piece
             } else {
@@ -423,31 +601,56 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
         }
 
     } else if(Check_for_win(row, col) <= 2){ //Go on offense
-        for(uint8_t i = 5; i>=0; i--){ 
+        for(uint8_t i = 5; (i>=0 && i!=255); i=i-1){
             for(uint8_t j = 0; j<7; j++){
                 if(Game_Board[i][j] == 2){
                     if(check_all(i, j) == 1){ //this is the check for the middle piece. I want to make this a function that checks all of the pieces around it and returns the number of pieces in a row.
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 2){
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 3){
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 4){
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 5){
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 6){
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 7){
-                        //return j; //this is the column we want to drop the piece in.
-                    } else if(check_all(i, j) == 8){
-                        //return j; //this is the column we want to drop the piece in.
+                        if(j>=5){ //(right) edge case
+                            return j-2; //drop it to the left of the left piece
+                        } else if(j<=1){//(left) edge case
+                            return j+2; //drop it to the right of the right piece
+                        } else { //general case
+                            if(Game_Board[i][j-2]==0){
+                                return j-2;
+                            } else if(Game_Board[i][j+2]==0){
+                                return j+2;
+                            }
+                            return j-2; //I'm gonna make this AI favour putting a piece as far left as possble to block the pieces. An easy way to win may be to set it up so that you can win by keeping a space open to the right?
+                        }
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 3){//leftmost piece check
+                        if(j-1<0 || j-1>=128){ //edge case not caught by the check_if_leftmost_piece function, the j-1>=128 is just to see if subtracting from j makes the number roll over to 255.
+                            return j+3;
+                        }
+                        if(j+3>6){
+                            return j-1; //drop it to the left of the left piece
+                        }
+                        if(Game_Board[i][j+3]==0){
+                            return j+3; //drop it to the right of the rightmost piece
+                        } else if(Game_Board[i][j-1]==0){
+                            return j-1; //drop it to the left of the left piece
+                        } else {
+                            return j-1; //I'm gonna make this AI favour putting a piece as far left as possble to block the pieces. An easy way to win may be to set it up so that you can win by keeping a space open to the right?
+                        }
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 4){//rightmost piece check
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 5){//top left
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 6){//top right
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 7){//bottom left
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 8){//bottom right
+                        return j; //this is the column we want to drop the piece in.
+                    } else if(check_all(i, j) == 2){ //top piece check
+                        return j; //this is the column we want to drop the piece in.
                     }
                 }
             }
         }
 
-        for(uint8_t i=5; i>=0; i--){
+        for(uint8_t i=5; i>=0 && i!=255; i=i-1){
             for(uint8_t j=0; j<7; j++){
                 if(Game_Board[i][j]==2){ //again, we're making this AI favour the top left most piece.
                     if(i>0){
@@ -468,8 +671,15 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
                 }
             }
         }
+        return col; //AI will just drop a piece in the last used column if it can't find a winning move. This is a placeholder for now. I will make this better later.
     }
 }
 
 
-void EXTI0_IRQHANDER
+
+void EXTI0_IRQHandler(){
+	HAL_NVIC_DisableIRQ(EXTI0_IRQn);
+	button_pressed = !button_pressed;
+	__HAL_GPIO_EXTI_CLEAR_FLAG(GPIO_PIN_0);
+	HAL_NVIC_EnableIRQ(EXTI0_IRQn);
+}
