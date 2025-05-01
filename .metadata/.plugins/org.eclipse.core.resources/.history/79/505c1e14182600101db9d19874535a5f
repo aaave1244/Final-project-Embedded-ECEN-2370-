@@ -108,11 +108,10 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
                 return 3; //this means the game is a tie!!
             }
         }
-//    RNG_HandleTypeDef *hrng;
-//    HAL_RNG_Init(hrng);
-//    uint32_t * random32bit;
-//    HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(hrng, random32bit);
-//    *random32bit = 0;
+    RNG_HandleTypeDef *hrng;
+    HAL_RNG_Init(hrng);
+    uint32_t * random32bit = 0;
+    HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(hrng, random32bit);
     }
 
 }
@@ -639,9 +638,9 @@ uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for player
 
         //diagonal check (top left to bottom right. will check bottom right FIRST)
         for(uint8_t i=0; i+col<7 && row-i>=0; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
-            if(i==4){
-                return GAME_WON;
-            }
+//            if(i==row-4){
+//                return GAME_WON;
+//            }
             if(Game_Board[row-i][col+i] != Game_Board[row][col]){
                 for(uint8_t j=0; col-j>=0 && row+j<6; j++){
                     if((i+j)==4){ 
@@ -661,9 +660,9 @@ uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for player
 
         //diagonal check (top right to bottom left. will check bottom left FIRST)
         for(uint8_t i=0; i+col>=0 && row-i>=0 && i!=255 && i!=254; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
-            if(i==4){
-                return GAME_WON;
-            }
+//            if(i==row-4){
+//                return GAME_WON;
+//            }
             if(i > row || i > col){
             	break;
             }
@@ -954,86 +953,14 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
                         }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 4){//rightmost piece check
-                        if(j+1>6){
-                            return j-3;
-                        } else if(j-3<0 || j-3>=128){ //edge case not caught by the check_if_leftmost_piece function, the j-1>=128 is just to see if subtracting from j makes the number roll over to 255.
-                            return j+1;
-                        }
-                        if(Game_Board[i][j-3]==0){
-                            return j-3; //drop it to the left of the left piece
-                        } else if(Game_Board[i][j+1]==0){
-                            return j+1; //drop it to the right of the right piece
-                        } else {
-                            return j-3; //I'm gonna make this AI favour putting a piece as far left as possble to block the pieces. An easy way to win may be to set it up so that you can win by keeping a space open to the right?
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 5){//top left
-                        if(j>0 && i<6){
-                            if(Game_Board[i][j-1] != 0){
-                                return j-1;
-                            }
-                        }
-                        if(i>2 && j<3){
-                            if(Game_Board[i-3][j+3] == 0){
-                                return j+3;
-                            }
-                        }
-                        if(j<1){
-                            return j+3;
-                        } 
-                        if(Game_Board[i][j-1]!=0){ {
-                            return j-1;
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 6){//top right
-                        if(j<6 && i<6){
-                            if(Game_Board[i][j+1] != 0){
-                                return j+1;
-                            }
-                        }
-                        if(i>2 && j>3){
-                            if(Game_Board[i-3][j-3] == 0){
-                                return j-3;
-                            }
-                        }
-                        if(j>5){
-                            return j-3;
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 7){//bottom left
-                        if(j>0 && i<6 && i>0){
-                            if(Game_Board[i-1][j-1] != 0 && Game_Board[i][j-1] == 0){
-                                return j-1;
-                            }
-                        }
-                        if(i<3 && j<4){
-                            if(Game_Board[i+3][j+3] == 0 && Game_Board[i+2][j+3] != 0){
-                                return j+3;
-                            }
-                        }
-                        if(j<1){
-                            return j+3;
-                        }
-                        if(j>5){
-                            return j-1;
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 8){//bottom right
-                        if(j<6 && i>1){
-                            if(Game_Board[i-2][j+1] != 0 && Game_Board[i-1][j+1] == 0){
-                                return j+1;
-                            }
-                        }
-                        if(j<6 && i>0){
-                            if(Game_Board[i-1][j+1] == 0){
-                                return j+1;
-                            }
-                        }
-                        if(j>0 && i<5){
-                            if(Game_Board[i][j-1] != 0 && Game_Board[i+1][j-1] == 0){
-                                return j-1;
-                            }
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 2){ //top piece check
                         return j; //this is the column we want to drop the piece in.
@@ -1065,7 +992,6 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
         }
         return col; //AI will just drop a piece in the last used column if it can't find a winning move. This is a placeholder for now. I will make this better later.
     }
-}
 }
 
 

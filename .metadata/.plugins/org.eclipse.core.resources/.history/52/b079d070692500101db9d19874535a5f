@@ -7,9 +7,6 @@ static uint8_t Game_Board[6][7] = {0}; //2D array to represent the game board. 1
 static uint8_t Prev_col = 0;
 static uint8_t Prev_row = 0;
 
-static uint8_t player_one_wins = 0;
-static uint8_t player_two_wins = 0;
-
 static uint32_t Starting_Time = 0;
 
 void Main_menu(){
@@ -21,13 +18,13 @@ void Main_menu(){
         }
     }
 
-    LCD_Main_menu();
-} //already under development. currently called LCD_Main_menu in LCD_Driver.c. Think of something fun to add to this though!!
-
     //THIS IS RNG LOGIC!! USE WHEREVER I NEED RNG!!
     // RNG_HandleTypeDef *hrng;
     // HAL_RNG_Init(hrng);
     // HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(RNG_HandleTypeDef *hrng, uint32_t *random32bit);
+
+    LCD_Main_menu();
+} //already under development. currently called LCD_Main_menu in LCD_Driver.c. Think of something fun to add to this though!!
 
 uint8_t One_player_game(){ //figure out how to make workflow for these two better. I want to make one game() function where I can write the majority of code for this.
     LCD_Clear(0,LCD_COLOR_WHITE);
@@ -72,18 +69,10 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
         } else if(player_one_or_two == 2){
             col_tracker = AI_col(Prev_row, Prev_col); //this is the function that will drop the piece into the column. It will return the row number that it falls to.
             row_tracker = Drop_piece(col_tracker); //this is the function that will drop the piece into the column. It will return the row number that it falls to.
-            while(row_tracker == 255){
-                printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
+            if(row_tracker == 255){
                 //cannot drop as this column is full!!
-                if(col_tracker <= 3){
-                    row_tracker = Drop_piece(col_tracker+1);
-                    col_tracker = AI_col(row_tracker, col_tracker+1); 
-                    col_tracker = col_tracker+1;
-                } else {
-                    row_tracker = Drop_piece(col_tracker-1);
-                    col_tracker = AI_col(row_tracker, col_tracker-1); 
-                    col_tracker = col_tracker-1;
-                }
+                printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
+                break;
             }
             LCD_Draw_Circle_Fill(15+(row_tracker*30), 305-((6-col_tracker)*30), 12, LCD_COLOR_PLAYER(player_one_or_two));
             Game_Board[row_tracker][col_tracker] = player_one_or_two;
@@ -100,19 +89,6 @@ uint8_t One_player_game(){ //figure out how to make workflow for these two bette
             game_running = GAME_NOT_RUNNING; //this is the end condition. only set this when we want the game to end!
             return player_one_or_two;
         }
-        for(int i=0; i<7; i++){
-            if(Game_Board[5][i] == 0){
-                break;
-            } else if(i==6){
-                game_running = GAME_NOT_RUNNING; //this is the end condition. only set this when we want the game to end!
-                return 3; //this means the game is a tie!!
-            }
-        }
-//    RNG_HandleTypeDef *hrng;
-//    HAL_RNG_Init(hrng);
-//    uint32_t * random32bit;
-//    HAL_StatusTypeDef HAL_RNG_GenerateRandomNumber(hrng, random32bit);
-//    *random32bit = 0;
     }
 
 }
@@ -169,14 +145,6 @@ uint8_t Two_player_game(){
             game_running = GAME_NOT_RUNNING; //this is the end condition. only set this when we want the game to end!
             return player_one_or_two;
         }
-        for(int i=0; i<7; i++){
-            if(Game_Board[5][i] == 0){
-                break;
-            } else if(i==6){
-                game_running = GAME_NOT_RUNNING; //this is the end condition. only set this when we want the game to end!
-                return 3; //this means the game is a tie!!
-            }
-        }
     }
 }
 
@@ -186,14 +154,6 @@ static uint32_t time_seconds = 0;
 void User_col(uint8_t player_one_or_two){
     uint8_t col_tracker = 3; //start the game in the middle column!
     LCD_Draw_Circle_Fill(210, 305-(col_tracker*30), 12, LCD_COLOR_PLAYER(player_one_or_two));
-
-    // static GPIO_InitTypeDef * meow;
-    // static GPIO_TypeDef * GPIOx;
-    // HAL_GPIO_Init(GPIOx, meow);
-    // GPIO_PinState pin_state = HAL_GPIO_ReadPin(GPIOx, GPIO_PIN_0);
-    
-    //HAL_StatusTypeDef HAL_SPI_Transmit(SPI_HandleTypeDef *hspi, const uint8_t *pData, uint16_t Size, uint32_t Timeout);
-
     while (!button_pressed){
 
         uint32_t Time_Taken = (HAL_GetTick() - Starting_Time)/1000;
@@ -245,11 +205,6 @@ void User_col(uint8_t player_one_or_two){
 
     col_tracker = 6-col_tracker;
     uint8_t row_tracker = Drop_piece(col_tracker);
-
-    if(row_tracker == 255){ //error handling for when the column selected is full.
-        User_col(player_one_or_two);
-        return;
-    }
 
     LCD_Draw_Circle_Fill(15+(row_tracker*30), 305-(fake_col_tracker*30), 12, LCD_COLOR_PLAYER(player_one_or_two)); //this is the function that will drop the piece into the column. It will return the row number that it falls to.
     LCD_Draw_Circle_Fill(210, 305-(fake_col_tracker*30), 12, LCD_COLOR_WHITE);
@@ -304,141 +259,21 @@ void Lose(){
     LCD_DisplayChar(160,110,'D');
     LCD_DisplayChar(180,110,'S');
 
-    LCD_DisplayChar(30,280,'P');
-    LCD_DisplayChar(70,280,'A');
-    LCD_DisplayChar(90,280,'Y');
-    LCD_DisplayChar(50,280,'L');
-    LCD_DisplayChar(110,280,'E');
-    LCD_DisplayChar(130,280,'R');
-    LCD_DisplayChar(150,280,'1');
-    LCD_DisplayChar(160,280,':');
-    LCD_DisplayChar(190,280,'0' + player_one_wins);
-
-    LCD_DisplayChar(30,300,'P');
-    LCD_DisplayChar(50,300,'L');
-    LCD_DisplayChar(70,300,'A');
-    LCD_DisplayChar(90,300,'Y');
-    LCD_DisplayChar(110,300,'E');
-    LCD_DisplayChar(130,300,'R');
-    LCD_DisplayChar(150,300,'2');
-    LCD_DisplayChar(160,300,':');
-    LCD_DisplayChar(190,300,'0' + player_two_wins);
-
-    LCD_DisplayChar(80,150,'T');
-    LCD_DisplayChar(100,150,'O');
-    LCD_DisplayChar(120,150,'U');
-    LCD_DisplayChar(140,150,'C');
-    LCD_DisplayChar(160,150,'H');
-
-    LCD_DisplayChar(40,170,'A');
-    LCD_DisplayChar(60,170,'N');
-    LCD_DisplayChar(80,170,'Y');
-    LCD_DisplayChar(100,170,'W');
-    LCD_DisplayChar(120,170,'H');
-    LCD_DisplayChar(140,170,'E');
-    LCD_DisplayChar(160,170,'R');
-    LCD_DisplayChar(180,170,'E');
-
-    LCD_DisplayChar(20,190,'T');
-    LCD_DisplayChar(40,190,'O');
-
-    LCD_DisplayChar(70,190,'C');
-    LCD_DisplayChar(90,190,'O');
-    LCD_DisplayChar(110,190,'N');
-    LCD_DisplayChar(130,190,'T');
-    LCD_DisplayChar(150,190,'I');
-    LCD_DisplayChar(170,190,'N');
-    LCD_DisplayChar(190,190,'U');
-    LCD_DisplayChar(210,190,'E');
-
-    bool meow = true;
-    while(meow){ //this is just to make the screen stay on for a while so that the user can see the message.
-        if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
-            meow = false;
-            HAL_Delay(200);
-            break;
-        }
-    }
+    HAL_Delay(5000); //this is just to give the user a second to see the message before it goes away.
 }
 
 void Win(uint8_t player_one_or_two){
-    if(player_one_or_two == 1){
-        player_one_wins++;
-    } else if(player_one_or_two == 2){
-        player_two_wins++;
-    } else {
-        printf("Error in Win()! Player number is not 1 or 2!");
-    }
-
     uint32_t Ending_Time = HAL_GetTick();
     uint32_t Time_Taken = Ending_Time - Starting_Time;
 
     LCD_Clear(0, LCD_COLOR_GREEN);
-    LCD_DisplayChar(65,30,'P');
-    LCD_DisplayChar(80,30,'L');
-    LCD_DisplayChar(95,30,'A');
-    LCD_DisplayChar(110,30,'Y');
-    LCD_DisplayChar(125,30,'E');
-    LCD_DisplayChar(140,30,'R');
-    //LCD_DisplayChar(155,30,' ');
-    //LCD_SetFont(&Font16x24);
-    LCD_SetTextColor(LCD_COLOR_MAGENTA);
-    LCD_DisplayChar(175,30,'0'+player_one_or_two);
-    //LCD_SetFont(&Font16x24);
-    LCD_SetTextColor(LCD_COLOR_BLACK);
+    LCD_DisplayChar(100,30,'Y');
+    LCD_DisplayChar(120,30,'O');
+    LCD_DisplayChar(140,30,'U');
 
-    LCD_DisplayChar(90,50,'W');
-    LCD_DisplayChar(110,50,'I');
-    LCD_DisplayChar(130,50,'N');
-    LCD_DisplayChar(150,50,'S');
-    LCD_DisplayChar(160,50,'!');
-
-    LCD_DisplayChar(30,280,'P');
-    LCD_DisplayChar(50,280,'L');
-    LCD_DisplayChar(70,280,'A');
-    LCD_DisplayChar(90,280,'Y');
-    LCD_DisplayChar(110,280,'E');
-    LCD_DisplayChar(130,280,'R');
-    LCD_DisplayChar(150,280,'1');
-    LCD_DisplayChar(160,280,':');
-    LCD_DisplayChar(190,280,'0' + player_one_wins);
-
-    LCD_DisplayChar(30,300,'P');
-    LCD_DisplayChar(50,300,'L');
-    LCD_DisplayChar(70,300,'A');
-    LCD_DisplayChar(90,300,'Y');
-    LCD_DisplayChar(110,300,'E');
-    LCD_DisplayChar(130,300,'R');
-    LCD_DisplayChar(150,300,'2');
-    LCD_DisplayChar(160,300,':');
-    LCD_DisplayChar(190,300,'0' + player_two_wins);
-
-    LCD_DisplayChar(80,150,'T');
-    LCD_DisplayChar(100,150,'O');
-    LCD_DisplayChar(120,150,'U');
-    LCD_DisplayChar(140,150,'C');
-    LCD_DisplayChar(160,150,'H');
-
-    LCD_DisplayChar(40,170,'A');
-    LCD_DisplayChar(60,170,'N');
-    LCD_DisplayChar(80,170,'Y');
-    LCD_DisplayChar(100,170,'W');
-    LCD_DisplayChar(120,170,'H');
-    LCD_DisplayChar(140,170,'E');
-    LCD_DisplayChar(160,170,'R');
-    LCD_DisplayChar(180,170,'E');
-
-    LCD_DisplayChar(20,190,'T');
-    LCD_DisplayChar(40,190,'O');
-
-    LCD_DisplayChar(70,190,'C');
-    LCD_DisplayChar(90,190,'O');
-    LCD_DisplayChar(110,190,'N');
-    LCD_DisplayChar(130,190,'T');
-    LCD_DisplayChar(150,190,'I');
-    LCD_DisplayChar(170,190,'N');
-    LCD_DisplayChar(190,190,'U');
-    LCD_DisplayChar(210,190,'E');
+    LCD_DisplayChar(100,50,'W');
+    LCD_DisplayChar(120,50,'I');
+    LCD_DisplayChar(140,50,'N');
 
     Time_Taken = Time_Taken / 1000; //convert to seconds
 
@@ -447,6 +282,7 @@ void Win(uint8_t player_one_or_two){
     LCD_DisplayChar(120,70,'M');
     LCD_DisplayChar(140,70,'E');
     LCD_DisplayChar(160,70,':');
+
 
     int ones = Time_Taken % 10; //this is just to get the last digit of the time taken.
     int tens = (Time_Taken / 10) % 10; //this is just to get the second to last digit of the time taken.
@@ -467,107 +303,7 @@ void Win(uint8_t player_one_or_two){
     LCD_DisplayChar(160,110,'D');
     LCD_DisplayChar(180,110,'S');
     //and then display stats!! This is a grade requirement!!!
-    bool meow = true;
-    while(meow){ //this is just to make the screen stay on for a while so that the user can see the message.
-        if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
-            meow = false;
-            HAL_Delay(200);
-            break;
-        }
-    }
-}
-
-void Tie(){
-    uint32_t Ending_Time = HAL_GetTick();
-    uint32_t Time_Taken = Ending_Time - Starting_Time;
-
-    LCD_Clear(0, LCD_COLOR_YELLOW);
-    LCD_DisplayChar(100,30,'T');
-    LCD_DisplayChar(120,30,'I');
-    LCD_DisplayChar(140,30,'E');
-
-    Time_Taken = Time_Taken / 1000; //convert to seconds
-
-    LCD_DisplayChar(80,70,'T');
-    LCD_DisplayChar(100,70,'I');
-    LCD_DisplayChar(120,70,'M');
-    LCD_DisplayChar(140,70,'E');
-    LCD_DisplayChar(160,70,':');
-
-    int ones = Time_Taken % 10; //this is just to get the last digit of the time taken.
-    int tens = (Time_Taken / 10) % 10; //this is just to get the second to last digit of the time taken.
-    int hundreds = (Time_Taken / 100) % 10; //this is just to get the third to last digit of the time taken.
-    if(hundreds != 0){
-        LCD_DisplayChar(100,90, hundreds + '0'); //this is just to get the hundreds digit of the time taken.
-    }
-    if(tens!=0){
-        LCD_DisplayChar(120,90, tens + '0');
-    }
-    LCD_DisplayChar(140,90,'0' + ones);
-
-    LCD_DisplayChar(60,110,'S');
-    LCD_DisplayChar(80,110,'E');
-    LCD_DisplayChar(100,110,'C');
-    LCD_DisplayChar(120,110,'O');
-    LCD_DisplayChar(140,110,'N');
-    LCD_DisplayChar(160,110,'D');
-    LCD_DisplayChar(180,110,'S');
-
-    LCD_DisplayChar(30,280,'P');
-    LCD_DisplayChar(50,280,'L');
-    LCD_DisplayChar(70,280,'A');
-    LCD_DisplayChar(90,280,'Y');
-    LCD_DisplayChar(110,280,'E');
-    LCD_DisplayChar(130,280,'R');
-    LCD_DisplayChar(150,280,'1');
-    LCD_DisplayChar(160,280,':');
-    LCD_DisplayChar(190,280,'0' + player_one_wins);
-
-    LCD_DisplayChar(30,300,'P');
-    LCD_DisplayChar(50,300,'L');
-    LCD_DisplayChar(70,300,'A');
-    LCD_DisplayChar(90,300,'Y');
-    LCD_DisplayChar(110,300,'E');
-    LCD_DisplayChar(130,300,'R');
-    LCD_DisplayChar(150,300,'2');
-    LCD_DisplayChar(160,300,':');
-    LCD_DisplayChar(190,300,'0' + player_two_wins);
-
-    LCD_DisplayChar(80,150,'T');
-    LCD_DisplayChar(100,150,'O');
-    LCD_DisplayChar(120,150,'U');
-    LCD_DisplayChar(140,150,'C');
-    LCD_DisplayChar(160,150,'H');
-
-    LCD_DisplayChar(40,170,'A');
-    LCD_DisplayChar(60,170,'N');
-    LCD_DisplayChar(80,170,'Y');
-    LCD_DisplayChar(100,170,'W');
-    LCD_DisplayChar(120,170,'H');
-    LCD_DisplayChar(140,170,'E');
-    LCD_DisplayChar(160,170,'R');
-    LCD_DisplayChar(180,170,'E');
-
-    LCD_DisplayChar(20,190,'T');
-    LCD_DisplayChar(40,190,'O');
-
-    LCD_DisplayChar(70,190,'C');
-    LCD_DisplayChar(90,190,'O');
-    LCD_DisplayChar(110,190,'N');
-    LCD_DisplayChar(130,190,'T');
-    LCD_DisplayChar(150,190,'I');
-    LCD_DisplayChar(170,190,'N');
-    LCD_DisplayChar(190,190,'U');
-    LCD_DisplayChar(210,190,'E');
-
-    bool meow = true;
-    while(meow){ //this is just to make the screen stay on for a while so that the user can see the message.
-        if (returnTouchStateAndLocation(&StaticTouchData) == STMPE811_State_Pressed){
-            meow = false;
-            HAL_Delay(200);
-            break;
-        }
-    }
+    HAL_Delay(5000);
 }
 
 void Print_insult_for_main_menu(){
@@ -599,12 +335,12 @@ uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for player
             if(i==row-4){ // ((i-row)==4) would work as well. Just checking that we have TRAVERSED 5 spaces, the 5th space does NOT need to be the correct piece!
                 return GAME_WON;
             }
-            if(Game_Board[i][col] != Game_Board[row][col]){ //Game_Board[row][col] is a general win checker. no need for making seperate functions for each player!
-                connected_pieces = row-i;
-                break;
-            }
             if(i==0){
             	connected_pieces = row+1;
+            	break;
+            }
+            if(Game_Board[i][col] != Game_Board[row][col]){ //Game_Board[row][col] is a general win checker. no need for making seperate functions for each player!
+                connected_pieces = row-i;
                 break;
             }
         }
@@ -639,9 +375,9 @@ uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for player
 
         //diagonal check (top left to bottom right. will check bottom right FIRST)
         for(uint8_t i=0; i+col<7 && row-i>=0; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
-            if(i==4){
-                return GAME_WON;
-            }
+//            if(i==row-4){
+//                return GAME_WON;
+//            }
             if(Game_Board[row-i][col+i] != Game_Board[row][col]){
                 for(uint8_t j=0; col-j>=0 && row+j<6; j++){
                     if((i+j)==4){ 
@@ -661,9 +397,9 @@ uint8_t Check_for_win(uint8_t row, uint8_t col){ //will be using this for player
 
         //diagonal check (top right to bottom left. will check bottom left FIRST)
         for(uint8_t i=0; i+col>=0 && row-i>=0 && i!=255 && i!=254; i++){ //honestly I think most of this part is straightforward. Just make sure you don't go out of bounds, treat the world around you as a square planar field, and you're cooking.
-            if(i==4){
-                return GAME_WON;
-            }
+//            if(i==row-4){
+//                return GAME_WON;
+//            }
             if(i > row || i > col){
             	break;
             }
@@ -954,86 +690,14 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
                         }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 4){//rightmost piece check
-                        if(j+1>6){
-                            return j-3;
-                        } else if(j-3<0 || j-3>=128){ //edge case not caught by the check_if_leftmost_piece function, the j-1>=128 is just to see if subtracting from j makes the number roll over to 255.
-                            return j+1;
-                        }
-                        if(Game_Board[i][j-3]==0){
-                            return j-3; //drop it to the left of the left piece
-                        } else if(Game_Board[i][j+1]==0){
-                            return j+1; //drop it to the right of the right piece
-                        } else {
-                            return j-3; //I'm gonna make this AI favour putting a piece as far left as possble to block the pieces. An easy way to win may be to set it up so that you can win by keeping a space open to the right?
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 5){//top left
-                        if(j>0 && i<6){
-                            if(Game_Board[i][j-1] != 0){
-                                return j-1;
-                            }
-                        }
-                        if(i>2 && j<3){
-                            if(Game_Board[i-3][j+3] == 0){
-                                return j+3;
-                            }
-                        }
-                        if(j<1){
-                            return j+3;
-                        } 
-                        if(Game_Board[i][j-1]!=0){ {
-                            return j-1;
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 6){//top right
-                        if(j<6 && i<6){
-                            if(Game_Board[i][j+1] != 0){
-                                return j+1;
-                            }
-                        }
-                        if(i>2 && j>3){
-                            if(Game_Board[i-3][j-3] == 0){
-                                return j-3;
-                            }
-                        }
-                        if(j>5){
-                            return j-3;
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 7){//bottom left
-                        if(j>0 && i<6 && i>0){
-                            if(Game_Board[i-1][j-1] != 0 && Game_Board[i][j-1] == 0){
-                                return j-1;
-                            }
-                        }
-                        if(i<3 && j<4){
-                            if(Game_Board[i+3][j+3] == 0 && Game_Board[i+2][j+3] != 0){
-                                return j+3;
-                            }
-                        }
-                        if(j<1){
-                            return j+3;
-                        }
-                        if(j>5){
-                            return j-1;
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 8){//bottom right
-                        if(j<6 && i>1){
-                            if(Game_Board[i-2][j+1] != 0 && Game_Board[i-1][j+1] == 0){
-                                return j+1;
-                            }
-                        }
-                        if(j<6 && i>0){
-                            if(Game_Board[i-1][j+1] == 0){
-                                return j+1;
-                            }
-                        }
-                        if(j>0 && i<5){
-                            if(Game_Board[i][j-1] != 0 && Game_Board[i+1][j-1] == 0){
-                                return j-1;
-                            }
-                        }
                         return j; //this is the column we want to drop the piece in.
                     } else if(check_all(i, j) == 2){ //top piece check
                         return j; //this is the column we want to drop the piece in.
@@ -1065,7 +729,6 @@ uint8_t AI_col(uint8_t row, uint8_t col){ //just return the column the AI wants 
         }
         return col; //AI will just drop a piece in the last used column if it can't find a winning move. This is a placeholder for now. I will make this better later.
     }
-}
 }
 
 

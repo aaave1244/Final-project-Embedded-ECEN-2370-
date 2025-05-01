@@ -37,13 +37,13 @@ uint8_t Check_for_win(uint8_t row, uint8_t col); //this will be the offloading o
 void leaderboard(); //definitely implementing this last lol
 
 
-//typedef struct {
-//    uint8_t WHO_AM_I; //0x0F
-//    uint8_t CTRL_REG1; //0x20
-//    uint8_t CTRL_REG2; //0x21
-//    uint8_t CTRL_REG3; //0x22
-//    uint8_t CTRL_REG4; //0x23
-//    uint8_t CTRL_REG5; //0x24
-//} Gyro_Data;
+typedef struct {
+    uint8_t WHO_AM_I; //0x0F
+    uint8_t CTRL_REG1; //0x20
+    uint8_t CTRL_REG2; //0x21
+    uint8_t CTRL_REG3; //0x22
+    uint8_t CTRL_REG4; //0x23
+    uint8_t CTRL_REG5; //0x24
+} Gyro_Data;
 
 //HAL_Spi_Transmit(&hspi5, &Gyro_Data, 2, 1000);

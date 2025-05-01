@@ -297,6 +297,7 @@ void LCD_Draw_Char_Sideways(uint16_t Xpos, uint16_t Ypos, const uint16_t *c)
 {
   uint32_t index = 0, counter = 0;
   for(index = 0; index < LCD_Currentfonts->Height; index++)
+//   for(index = LCD_Currentfonts->Height - 1; index >= 0; index--)
   {
     for(counter = 0; counter < LCD_Currentfonts->Width; counter++)
     {

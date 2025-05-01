@@ -59,9 +59,9 @@ void Start_Game(void)
 					Win(WINNER); //change later to a wi screen specific to player 
 				}
 			}
-			// else {
-			// 	Print_insult_for_main_menu(); //this is currently more of a test to see how well I can implement my RNG functionality! Only prints to the console!
-			// }
+		}
+		if(WINNER==3){
+			Tie();
 		}
 	}
 }

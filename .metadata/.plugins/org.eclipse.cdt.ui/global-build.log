@@ -1,54 +1,74 @@
-16:33:24 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
+11:45:43 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
 make -j8 all 
 arm-none-eabi-gcc "../Core/Src/Game.c" -mcpu=cortex-m4 -std=gnu11 -g3 -DDEBUG -DUSE_HAL_DRIVER -DSTM32F429xx -c -I../Core/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc -I../Drivers/STM32F4xx_HAL_Driver/Inc/Legacy -I../Drivers/CMSIS/Device/ST/STM32F4xx/Include -I../Drivers/CMSIS/Include -O0 -ffunction-sections -fdata-sections -Wall -fstack-usage -fcyclomatic-complexity -MMD -MP -MF"Core/Src/Game.d" -MT"Core/Src/Game.o" --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -o "Core/Src/Game.o"
 ../Core/Src/Game.c: In function 'One_player_game':
-../Core/Src/Game.c:70:17: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
-   70 |                 printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
+../Core/Src/Game.c:76:17: warning: implicit declaration of function 'printf' [-Wimplicit-function-declaration]
+   76 |                 printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
       |                 ^~~~~~
 ../Core/Src/Game.c:2:1: note: include '<stdio.h>' or provide a declaration of 'printf'
     1 | #include "Game.h"
   +++ |+#include <stdio.h>
     2 | 
-../Core/Src/Game.c:70:17: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-   70 |                 printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
+../Core/Src/Game.c:76:17: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+   76 |                 printf("ERROR: AI is attempting to drop a piece in a full column!!\n");
       |                 ^~~~~~
-../Core/Src/Game.c:70:17: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/Game.c:79:13: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-   79 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
+../Core/Src/Game.c:76:17: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:94:13: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+   94 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
       |             ^~~~~~
-../Core/Src/Game.c:79:13: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:94:13: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c: In function 'Two_player_game':
+../Core/Src/Game.c:163:13: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  163 |             printf("Error in One_player_game()! Player number is not 1 or 2!");
+      |             ^~~~~~
+../Core/Src/Game.c:163:13: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:155:17: warning: unused variable 'row_tracker' [-Wunused-variable]
+  155 |         uint8_t row_tracker = 0;
+      |                 ^~~~~~~~~~~
+../Core/Src/Game.c:154:17: warning: unused variable 'col_tracker' [-Wunused-variable]
+  154 |         uint8_t col_tracker = 3; //start the game in the middle column!
+      |                 ^~~~~~~~~~~
+../Core/Src/Game.c: In function 'Win':
+../Core/Src/Game.c:370:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  370 |         printf("Error in Win()! Player number is not 1 or 2!");
+      |         ^~~~~~
+../Core/Src/Game.c:370:9: note: include '<stdio.h>' or provide a declaration of 'printf'
 ../Core/Src/Game.c: In function 'Print_insult_for_main_menu':
-../Core/Src/Game.c:256:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-  256 |         printf("You are a loser!");
+../Core/Src/Game.c:576:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  576 |         printf("You are a loser!");
       |         ^~~~~~
-../Core/Src/Game.c:256:9: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/Game.c:258:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-  258 |         printf("You are a nerd!");
+../Core/Src/Game.c:576:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:578:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  578 |         printf("You are a nerd!");
       |         ^~~~~~
-../Core/Src/Game.c:258:9: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/Game.c:260:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-  260 |         printf("You are a dork!");
+../Core/Src/Game.c:578:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:580:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  580 |         printf("You are a dork!");
       |         ^~~~~~
-../Core/Src/Game.c:260:9: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/Game.c:262:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-  262 |         printf("You are a fool!");
+../Core/Src/Game.c:580:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:582:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  582 |         printf("You are a fool!");
       |         ^~~~~~
-../Core/Src/Game.c:262:9: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/Game.c:264:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-  264 |         printf("You are a clown!");
+../Core/Src/Game.c:582:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:584:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  584 |         printf("You are a clown!");
       |         ^~~~~~
-../Core/Src/Game.c:264:9: note: include '<stdio.h>' or provide a declaration of 'printf'
-../Core/Src/Game.c:266:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
-  266 |         printf("RNG NOT WORKING CORRECTLY IN Game.c, Print_insult_for_main_menu()");
+../Core/Src/Game.c:584:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:586:9: warning: incompatible implicit declaration of built-in function 'printf' [-Wbuiltin-declaration-mismatch]
+  586 |         printf("RNG NOT WORKING CORRECTLY IN Game.c, Print_insult_for_main_menu()");
       |         ^~~~~~
-../Core/Src/Game.c:266:9: note: include '<stdio.h>' or provide a declaration of 'printf'
+../Core/Src/Game.c:586:9: note: include '<stdio.h>' or provide a declaration of 'printf'
 ../Core/Src/Game.c: In function 'One_player_game':
-../Core/Src/Game.c:90:1: warning: control reaches end of non-void function [-Wreturn-type]
-   90 | }
+../Core/Src/Game.c:118:1: warning: control reaches end of non-void function [-Wreturn-type]
+  118 | }
+      | ^
+../Core/Src/Game.c: In function 'Two_player_game':
+../Core/Src/Game.c:181:1: warning: control reaches end of non-void function [-Wreturn-type]
+  181 | }
       | ^
 ../Core/Src/Game.c: In function 'AI_col':
-../Core/Src/Game.c:673:1: warning: control reaches end of non-void function [-Wreturn-type]
-  673 | }
+../Core/Src/Game.c:1069:1: warning: control reaches end of non-void function [-Wreturn-type]
+ 1069 | }
       | ^
 arm-none-eabi-gcc -o "ECEN2370_StarterCode_SP25.elf" @"objects.list"   -mcpu=cortex-m4 -T"C:\Users\avepe\Documents\VScode Stuff\Ecen_2370_final_project\Final-project-Embedded-ECEN-2370-\ECEN2370_StarterCode_SP25\STM32F429ZITX_FLASH.ld" --specs=nosys.specs -Wl,-Map="ECEN2370_StarterCode_SP25.map" -Wl,--gc-sections -static --specs=nano.specs -mfpu=fpv4-sp-d16 -mfloat-abi=hard -mthumb -Wl,--start-group -lc -lm -Wl,--end-group
 Finished building target: ECEN2370_StarterCode_SP25.elf
@@ -56,15 +76,15 @@ Finished building target: ECEN2370_StarterCode_SP25.elf
 arm-none-eabi-size  ECEN2370_StarterCode_SP25.elf 
 arm-none-eabi-objdump -h -S ECEN2370_StarterCode_SP25.elf  > "ECEN2370_StarterCode_SP25.list"
    text	   data	    bss	    dec	    hex	filename
-  39748	    120	 156408	 196276	  2feb4	ECEN2370_StarterCode_SP25.elf
+  43172	    120	 156408	 199700	  30c14	ECEN2370_StarterCode_SP25.elf
 Finished building: default.size.stdout
  
 Finished building: ECEN2370_StarterCode_SP25.list
  
-16:33:31 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
+11:45:47 **** Incremental Build of configuration Debug for project ECEN2370_StarterCode_SP25 ****
 make -j8 all 
 arm-none-eabi-size  ECEN2370_StarterCode_SP25.elf 
    text	   data	    bss	    dec	    hex	filename
-  39748	    120	 156408	 196276	  2feb4	ECEN2370_StarterCode_SP25.elf
+  43172	    120	 156408	 199700	  30c14	ECEN2370_StarterCode_SP25.elf
 Finished building: default.size.stdout
  
